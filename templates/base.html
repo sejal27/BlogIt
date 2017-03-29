@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>  
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
+    <link type="text/css" rel="stylesheet" href="/static/main.css">
+    <title>BlogIt</title>
+  </head>
+
+  <body>
+    <header>
+      <h1 class="title"><a href="/" class="main-title">BlogIt</a></h1>
+      <div class="user-area">
+        {% if user %}
+            <ul>
+              <li><a href="/newpost">New Post</a></li>
+              <li><a href="/user/{{user.key().id()}}">My Posts</a></li>
+              <li>{{user.name}}</li>
+              <li><a class="login-link" href="/logout">Logout</a></li>
+            </ul>
+        {% endif %}
+      </div>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+  </body>
+</html>
+

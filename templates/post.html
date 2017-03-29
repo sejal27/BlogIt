@@ -1,0 +1,19 @@
+  <div class="post">
+    <div class="post-heading">
+      <div class="post-title">
+        <a href="/blog/{{postid}}">{{p.subject}}</a>
+      </div>
+      <ul class="post-metadata">
+        <li class="postuser">
+          {{username}}
+        </li>
+        <li class="post-date">
+          {{p.created.strftime("%b %d, %Y")}}
+        </li>
+      </ul>
+    </div>
+    <div class="post-content">
+      {{p._render_text | safe}}
+    </div>
+    <hr>
+  </div>

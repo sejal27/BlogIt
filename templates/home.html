@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block head %}
+<style>
+  .post{
+    margin-top:20px;
+  }
+  .post-subject{
+    border-bottom: 1.5px solid black;
+    display: flex;
+    flex-flow: row nowrap;
+  }
+  .post-subject h2{
+    font-weight: bold;
+    text-align: left;
+    width:50%;
+    text-decoration: none;
+  }
+  .post-subject h2 a{
+    text-decoration: none;
+    color:#000;
+  }
+  .post-subject h5{
+    text-align: right;
+    width:50%;
+    padding-top:7px;
+  }
+  .post-subject *{
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  hr{
+    margin:auto;
+  }
+  body{
+    box-sizing: border-box;
+  }
+  .post-content{
+    text-align: left;
+    padding-top: 10px;
+  }
+  .post-content::first-letter{
+    font-size: 1.2em;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+  <br>
+  {% for post in posts %}
+    <div class="post">
+      <div class="post-subject">
+        <h2>
+          {{post.subject}}
+        </h2>
+        <h5>{{post.created.strftime("%B %d, %Y")}}</h5>
+      </div>
+      <hr>
+      <div class="post-content">{{post.content | safe}}</div>
+    </div>
+  {% endfor %}
+
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {{post.render() | safe}}
+    <div class="post-footer">
+        {% if postuser %}
+            <span>
+                <a href="/blog/edit/{{post.key().id()}}">Edit</a>
+            </span>
+        {% endif %}
+        <form method="post">
+            <span>{{post.likes_total}}</span>
+            {% if not postuser %}
+            <button class="postbutton" type="submit" name="postbutton" value="like">Like</button>
+            {% endif %}
+            {% if postuser %}
+            <button type="submit" class="postbutton" name="postbutton" value="delete">Delete</button>
+            {% endif %}
+        </form>
+    </div>
+    <hr>
+    <div class="addcomment">
+        <form method="post">
+            <textarea name="comment_text">{{comment_text}}</textarea>
+            <button class="postbutton" name="postbutton" type="submit" value="comment">Comment</button>
+        </form>
+    </div>
+    <hr>
+    <div class="postcomments">
+        {% for c in comments %}
+            <div class="comment">
+                <span>{{c.commentuser}}</span>
+                <span>{{c.created}}</span>
+                {if c.editmode %}
+                    <form method="post">
+                        <textarea name="comment_edit_text">{{c.commenttext}}</textarea>
+                        <button name="postbutton" class="postbutton", value="submitcommentedit, {{c.key().id()}}"></button>
+                    </form>
+                {% else %}
+                    <div>{{c.commenttext}}</div>
+                    {% if c.editallowed %}
+                    <form method="post">
+                        <button name="postbutton" value="editcomment,{{c.key().id()}}" class="postbutton">Edit</button>
+                    </form>
+                    {% endif %}
+                {% endif %}
+            </div>
+            <hr>
+        {% endfor %}
+    </div>
+{% endblock %}
