@@ -39,3 +39,8 @@ indexes:
   properties:
   - name: date
     direction: desc
+
+- kind: User
+  properties:
+  - name: postuser
+  - name: desc

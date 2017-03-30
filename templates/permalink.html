@@ -2,50 +2,59 @@
 
 {% block content %}
     {{post.render() | safe}}
+    <!-- The below content is displayed only for an individual post page -->
     <div class="post-footer">
-        {% if postuser %}
-            <span>
-                <a href="/blog/edit/{{post.key().id()}}">Edit</a>
-            </span>
-        {% endif %}
-        <form method="post">
-            <span>{{post.likes_total}}</span>
-            {% if not postuser %}
-            <button class="postbutton" type="submit" name="postbutton" value="like">Like</button>
-            {% endif %}
-            {% if postuser %}
-            <button type="submit" class="postbutton" name="postbutton" value="delete">Delete</button>
-            {% endif %}
-        </form>
-    </div>
-    <hr>
-    <div class="addcomment">
-        <form method="post">
-            <textarea name="comment_text">{{comment_text}}</textarea>
-            <button class="postbutton" name="postbutton" type="submit" value="comment">Comment</button>
-        </form>
-    </div>
-    <hr>
-    <div class="postcomments">
-        {% for c in comments %}
-            <div class="comment">
-                <span>{{c.commentuser}}</span>
-                <span>{{c.created}}</span>
-                {if c.editmode %}
-                    <form method="post">
-                        <textarea name="comment_edit_text">{{c.commenttext}}</textarea>
-                        <button name="postbutton" class="postbutton", value="submitcommentedit, {{c.key().id()}}"></button>
-                    </form>
+        <hr>
+        <form class="postoperations" method="post">
+            <div>
+                <span>{{post.likes_total}}</span>
+                <!-- Hide 'Like' button if the post author is the logged in user. -->
+                {% if not postuser %}
+                    <button class="postbutton" type="submit" name="postbutton" value="like"><i class="fa fa-thumbs-up" aria-hidden="true"></i></button>
                 {% else %}
-                    <div>{{c.commenttext}}</div>
-                    {% if c.editallowed %}
-                    <form method="post">
-                        <button name="postbutton" value="editcomment,{{c.key().id()}}" class="postbutton">Edit</button>
-                    </form>
-                    {% endif %}
-                {% endif %}
+                    <i class="fa fa-thumbs-o-up" aria-hidden="true" style="color:#D3D3D3;"></i>
+                {% endif %}             
             </div>
-            <hr>
-        {% endfor %}
+            <div>
+                <!-- Only post author can edit and delete the post -->
+                {% if postuser %}
+                   <button type="submit" class="postbutton" name="postbutton" value="delete"><i class="fa fa-times" aria-hidden="true"></i></button>
+                   <span>
+                       <a href="/blog/edit/{{post.key().id()}}">
+                       <i class="fa fa-pencil" aria-hidden="true"></i></a>
+                   </span>
+                {% endif %} 
+            </div>
+        </form>
+        <div class="addcomment">
+            <form method="post">
+                <textarea name="comment_text">{{comment_text}}</textarea><br>
+                <button class="postbutton" name="postbutton" type="submit" value="comment">Comment</button>
+            </form>
+        </div>
+        <div class="postcomments">
+            {% for c in comments %}
+                <hr>
+                <div class="comment">
+                    <span>By {{c.commentuser.displayname}}</span>
+                    <span>{{c.created}}</span>
+                    <!-- Open the comment in edit mode when edit button is clicked -->
+                    {%if c.editmode %}
+                        <form method="post">
+                            <textarea class="comment-edit" name="comment_edit_text">{{c.commenttext}}</textarea><br>
+                            <button name="postbutton" class="postbutton" type="submit" value="submitcommentedit, {{c.key().id()}}"><i class="fa fa-check" aria-hidden="true"></i></button>
+                            <button name="postbutton" type="submit" value="deletecomment,{{c.key().id()}}" class="postbutton"><i class="fa fa-times" aria-hidden="true"></i></button>
+                        </form>
+                    {% else %}
+                        <div>{{c.commenttext}}</div>
+                        {% if c.editallowed %}
+                            <form method="post">
+                                <button name="postbutton" type="submit" value="editcomment,{{c.key().id()}}" class="postbutton"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                            </form>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}

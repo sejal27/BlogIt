@@ -1,0 +1,251 @@
+/* Common Styles */
+
+body{
+  box-sizing: border-box;
+  font-family: verdana;
+}
+
+main, footer{
+  margin:auto;
+  width:100%;
+}
+
+footer{
+  text-align: center;
+  margin: 30px 0;
+}
+
+hr{
+  height:1px;
+  color:#000;
+  background-color:#000;
+}
+
+/* Blog Header Styles */
+
+header{
+  width:100%;
+  background: #222121;
+  color: #fff;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  margin: 0 0 20px 0;
+  padding: 0;
+}
+
+.title a{
+  text-decoration: none;
+  color: #fff;  
+}
+
+.title{
+  padding-left: 20px;
+}
+
+.user-area ul{
+  align-self: flex-end;
+  font-size: 1.5em;
+  padding-right: 20px;
+}
+
+.user-area ul li{
+  display: inline-block;
+  padding: 0 10px;
+}
+
+.user-area ul li a{
+  text-decoration: none;
+  color: #fff;
+}
+
+.username{
+  text-transform: capitalize;
+}
+
+/* Signup and Login page styles */
+.entry-page, .login{
+  height:100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+  flex-flow: column;
+}
+
+.input{
+  height: 1.8em;
+}
+
+.label{
+  font-size: 1em;
+  padding-right: 20px;
+}
+
+.entry-page form table tr td{
+  padding: 3px;
+}
+
+.submit{
+  margin-top: 10px;
+  height: 3em;
+  width: 6em;
+  font-size: 1em;
+  font-weight: 600;
+}
+
+.entry-page p, .entry-page a, .login p. .login a{
+  font-size: 1em;
+}
+
+.error{
+  color: red;
+  font-size: 0.9em;
+}
+
+.login div{
+  margin: 10px 0;
+}
+
+.login .login-form tr{
+  height: 40px;
+}
+
+/* New Post page styles */
+
+.newpost{
+  margin: 15px 25%;
+  padding-top: 20px;
+  width:50%;
+}
+
+.newpost form label div{
+  display: block;
+  font-size: 20px;
+  font-weight: bold;
+  padding:15px 0;
+}
+
+.newpost form{
+  width: 100%;
+}
+
+.newpost form input[type=text]{
+  padding:inherit 0px;
+  margin:inherit 0px;
+  width:100%;
+  height: 2em;
+}
+
+.newpost form textarea{
+  padding:inherit 0px !important;
+  margin:inherit 0px !important;
+  width:100%;
+  height:300px;
+  font-size: 17px;
+  font-family: monospace;
+}
+
+.newpost form input[type=submit]{
+  font-size:24px;
+  margin:auto;
+  margin-top: 15px;
+}
+
+/* Posts display styles */
+
+.post-heading{
+  width: 100%;
+  display:flex;
+  justify-content: space-between;
+  flex-flow: row nowrap;
+  padding-bottom:5px;
+  border-bottom: 2px black solid;
+}
+
+.post-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  padding:0;
+  text-transform: capitalize;
+}
+
+.post-title a{
+  text-decoration:none;
+  color:#000;
+}
+.post-metadata {
+  color: #999;
+  list-style:none;
+  padding-bottom:0;
+  margin:0;
+}
+
+.post-metadata li{
+  display:inline-block;
+  font-size:1em;
+  padding: 0px 10px;
+  text-transform: capitalize;
+}
+
+.post{
+  margin: auto;
+  margin-top: 10px;
+  width: 70%;
+}
+
+.post-footer{
+  margin:auto;
+  margin-top: 30px;
+  width: 70%;
+}
+
+.post{
+  box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  padding: 10px;
+}
+
+.post-content{
+  margin:auto;
+  margin-top: 20px;
+  width: 100%;
+}
+
+div.post-content::first-letter{
+  text-transform: uppercase;
+  font-size:2em;
+}
+
+.post-footer{
+  font-size:1em;
+}
+
+.postoperations{
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+
+.addcomment textarea{
+  width: 60%;
+  height:70px;
+  margin: 10px 0;
+}
+
+.comment span{
+  color: #999;
+  font-size: 1em;
+}
+
+.comment div{
+  margin: 5px 0 5px 0;
+}
+
+.postbutton{
+  display: inline-block;
+}
+
+.comment form textarea{
+  width:60%;
+  height:70px;
+  margin:5px 0 5px 0;
+}
