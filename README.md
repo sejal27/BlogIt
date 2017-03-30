@@ -28,7 +28,7 @@ View live version of this app deployed on GCloud here: https://blogit-app.appspo
 2. [Install Google Cloud SDK](https://cloud.google.com/sdk/downloads) and configure your project on the [Gcloud console](https://console.cloud.google.com/?_ga=1.161349432.42502844.1490027497).
 3. Run Gcloud init, and select your account and application.
 4. Run dev_appserver.py . --port &lt;port-number&gt;
-5. Open http://localhost: &lt;port-number&gt;
+5. Open http://localhost:&lt;port-number&gt;
 
 ## Source Files
 blog.py - Contains all the blog handlers
