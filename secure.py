@@ -3,9 +3,11 @@ import hashlib
 import hmac
 from string import letters
 
-####################### Functions to make secure hash of user id cookie ####################################
-#Secret - Random string, normally not stored in the code.
-#Generlly stored in a module that's only on the production machine.
+"""
+Functions to make secure hash of user id cookie
+Secret - Random string, normally not stored in the code.
+Generlly stored in a module that's only on the production machine.
+"""
 secret = "iamnosecret"
 
 # Takes a string as an input and returns the secured value, using secret string and HMAC.

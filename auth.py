@@ -89,6 +89,7 @@ class Register(Signup):
             u.put()
             self.login(u)
             self.redirect('/')
+            return
 
 
 class Login(base.BlogHandler):
@@ -109,6 +110,7 @@ class Login(base.BlogHandler):
         if u:
             self.login(u)
             self.redirect('/')
+            return
         else:
             msg = 'Invalid Login'
             self.render('login-form.html', error=msg)
@@ -118,3 +120,4 @@ class Logout(base.BlogHandler):
     def get(self):
         self.logout()  # Clear cookies on logout
         self.redirect('/login')
+        return

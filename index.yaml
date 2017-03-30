@@ -12,18 +12,6 @@ indexes:
 
 - kind: Post
   properties:
-  - name: postuid
-  - name: created
-    direction: desc
-
-- kind: Post
-  properties:
-  - name: postuid=
-  - name: created
-    direction: desc
-
-- kind: Post
-  properties:
   - name: postuser
   - name: created
     direction: desc

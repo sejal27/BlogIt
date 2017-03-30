@@ -16,6 +16,7 @@ class BlogFront(base.BlogHandler):
             self.render('front.html', posts=posts, heading_text="")
         else:
             self.redirect('/login')
+            return
 
 
 class NewPost(base.BlogHandler):
@@ -29,10 +30,12 @@ class NewPost(base.BlogHandler):
             self.render("newpost.html")
         else:
             self.redirect("/login")
+            return
 
     def post(self):
         if not self.user:
             self.redirect('/login')
+            return
 
         postbutton = self.request.get("postbutton")
 
@@ -48,6 +51,7 @@ class NewPost(base.BlogHandler):
                     postuser=self.user)
                 p.put()
                 self.redirect('/blog/%s' % str(p.key().id()))
+                return
             else:
                 error = "You must enter the subject and the content for the post."
                 self.render(
@@ -95,34 +99,38 @@ class EditPost(base.BlogHandler):
                 error="")
         else:
             self.redirect('/blog/%s' % str(post.key().id()))
+            return
 
     def post(self, post_id):
-        if not self.user:
-            self.redirect('/')
 
         key = db.Key.from_path('Post', int(post_id), parent=blog_key())
         post = db.get(key)
-        post_button = self.request.get("post_button")
 
-        if post_button == "submit":
-            subject = self.request.get('subject')
-            content = self.request.get('content')
+        if self.user and self.user == post.postuser:
+            post_button = self.request.get("post_button")
 
-            if subject and content:
-                post.subject = subject
-                post.content = content
-                post.put()
+            if post_button == "submit":
+                subject = self.request.get('subject')
+                content = self.request.get('content')
+
+                if subject and content:
+                    post.subject = subject
+                    post.content = content
+                    post.put()
+                    self.redirect('/blog/%s' % str(post.key().id()))
+                    return
+                else:
+                    error = "You must enter the subject and the content for the post."
+                    self.render(
+                        "editpost.html",
+                        subject=post.subject,
+                        content=post.content,
+                        error=error)
+            if post_button == "cancel":
                 self.redirect('/blog/%s' % str(post.key().id()))
-            else:
-                error = "You must enter the subject and the content for the post."
-                self.render(
-                    "editpost.html",
-                    subject=post.subject,
-                    content=post.content,
-                    error=error)
-        if post_button == "cancel":
-            self.redirect('/blog/%s' % str(post.key().id()))
-
+                return
+        else:
+            self.redirect('/login')
 
 class PostPage(base.BlogHandler):
     """
@@ -179,35 +187,44 @@ class PostPage(base.BlogHandler):
         if post_button[0] == "like":
             # If the user already liked the post, decrease likes_total (unlike
             # post)
-            if user_key in post.likedby:
-                post.likedby.remove(user_key)
-                post.likes_total -= 1
-                post.put()
-            else:
-                # Increase the likes_total, and append the user to 'likedby'
-                # list
-                post.likes_total += 1
-                post.likedby.append(user_key)
-                post.put()
-            self.redirect('/blog/%s' % str(post.key().id()))
-            return
+            if self.user.key().id() != post.postuser.key().id():
+                if user_key in post.likedby:
+                    post.likedby.remove(user_key)
+                    post.likes_total -= 1
+                    post.put()
+                else:
+                    # Increase the likes_total, and append the user to 'likedby'
+                    # list
+                    post.likes_total += 1
+                    post.likedby.append(user_key)
+                    post.put()
+                self.redirect('/blog/%s' % str(post.key().id()))
+                return
 
         elif post_button[0] == "delete":
-            post.delete()
-            self.redirect('/')
-            return
+            if self.user.key().id() != post.postuser.key().id():
+                post.delete()
+                self.redirect('/')
+                return
+            else:
+                self.redirect('/login')
+                return
 
         # Add new comment to the post
         elif post_button[0] == "comment":
-            comment_text = self.request.get("comment_text")
-            commentuser = self.user
-            newcomment = Comment(
-                parent=post,
-                commentuser=commentuser,
-                commenttext=comment_text)
-            newcomment.put()
-            self.redirect('/blog/%s' % str(post.key().id()))
-            return
+            if self.user:
+                comment_text = self.request.get("comment_text")
+                commentuser = self.user
+                newcomment = Comment(
+                    parent=post,
+                    commentuser=commentuser,
+                    commenttext=comment_text)
+                newcomment.put()
+                self.redirect('/blog/%s' % str(post.key().id()))
+                return
+            else:
+                self.redirect('/login')
+                return
 
         # Edit existing post comment
         elif post_button[0] == "editcomment":
@@ -229,21 +246,24 @@ class PostPage(base.BlogHandler):
                 'Comment', int(
                     post_button[1]), parent=post.key())
             c = db.get(key)
-            c.delete()
-            self.redirect('/blog/%s' % str(post.key().id()))
-            return
+            if c and self.user.key().id() == c.commentuser.key().id():
+                c.delete()
+                self.redirect('/blog/%s' % str(post.key().id()))
+                return
+            else:
+                self.redirect('/login')
+                return
 
         # Submit the edited comment to the db
         elif post_button[0] == "submitcommentedit":
-            key = db.Key.from_path(
-                'Comment', int(
-                    post_button[1]), parent=post.key())
+            key = db.Key.from_path('Comment', int(post_button[1]), parent=post.key())
             c = db.get(key)
-            c.commenttext = self.request.get("comment_edit_text")
-            c.editmode = False
-            c.put()
-            self.redirect('/blog/%s' % str(post.key().id()))
-            return
+            if c and self.user.key().id() == c.commentuser.key().id():
+                c.commenttext = self.request.get("comment_edit_text")
+                c.editmode = False
+                c.put()
+                self.redirect('/blog/%s' % str(post.key().id()))
+                return
 
         else:
             comments = db.GqlQuery(
